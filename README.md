@@ -14,7 +14,7 @@ Features:
 * Optional row shading and hierarchy tree outlines
 * More than 200 icons are available out of the box
 
-### Installation
+# Installation
 
 Install via Unity Package Manager as a git package:
 
