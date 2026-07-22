@@ -24,7 +24,7 @@ namespace Borodar.RainbowHierarchy
 		static RainbowHierarchyGUI()
 		{
 			EditorApplication.hierarchyChanged += HierarchyWindowChanged;
-			EditorApplication.hierarchyWindowItemOnGUI += RainbowHierarchyItemOnGUI;
+			EditorApplication.hierarchyWindowItemByEntityIdOnGUI += RainbowHierarchyItemOnGUI;
 			HierarchyRulesetV2.OnRulesetChangeCallback += OnRulesetChange;
 		}
 
@@ -43,7 +43,7 @@ namespace Borodar.RainbowHierarchy
 			RECURSIVE_OBJECTS.Clear();
 		}
 
-		private static void RainbowHierarchyItemOnGUI(int entityId, Rect selectionRect)
+		private static void RainbowHierarchyItemOnGUI(EntityId entityId, Rect selectionRect)
 		{
 			var gameObject = (GameObject) EditorUtility.EntityIdToObject(entityId);
 			if (gameObject == null) return;
