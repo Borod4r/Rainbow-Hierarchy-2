@@ -14,6 +14,26 @@ Features:
 * Optional row shading and hierarchy tree outlines
 * More than 200 icons are available out of the box
 
+### Installation
+
+Install via Unity Package Manager as a git package:
+
+1. Open `Window → Package Manager`.
+2. Click `+` → `Install package from git URL...`
+3. Paste:
+
+```
+https://github.com/Borod4r/Rainbow-Hierarchy-2.git?path=Assets/Plugins/Borodar/RainbowHierarchy
+```
+
+Or add it to `Packages/manifest.json` manually:
+
+```json
+"com.borodar.rainbow-hierarchy": "https://github.com/Borod4r/Rainbow-Hierarchy-2.git?path=Assets/Plugins/Borodar/RainbowHierarchy"
+```
+
+Alternatively, clone this repository and copy `Assets/Plugins/Borodar` into your project's `Assets` folder.
+
 # Technical Notes & Stability
 
 * This asset relies heavily on Unity's internal Editor APIs. While stable for official releases, major Unity updates may occasionally break functionality until a patch is issued.
