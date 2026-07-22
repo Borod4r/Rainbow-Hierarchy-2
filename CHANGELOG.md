@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.6.5] - 2026-07-22
+
+### Added
+- Added support for Unity 6000.5 and newer.
+
 ## [2.6.4] - 2026-07-22
 
 ### Added
