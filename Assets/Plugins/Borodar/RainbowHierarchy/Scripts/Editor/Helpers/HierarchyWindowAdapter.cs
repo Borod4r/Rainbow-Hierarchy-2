@@ -43,7 +43,7 @@ namespace Borodar.RainbowHierarchy
             TREE_VIEW_FIELD = sceneHierarchyType.GetField("m_TreeView", INSTANCE_PRIVATE);
 
             var treeViewControllerTypeGeneric = assembly.GetType("UnityEditor.IMGUI.Controls.TreeViewController`1");
-            var treeViewControllerType = treeViewControllerTypeGeneric.MakeGenericType(typeof(int));
+            var treeViewControllerType = treeViewControllerTypeGeneric.MakeGenericType(typeof(EntityId));
             TREE_VIEW_DATA_PROPERTY = treeViewControllerType .GetProperty("data", INSTANCE_PUBLIC);
 
             var treeViewDataType = assembly.GetType("UnityEditor.GameObjectTreeViewDataSource");
@@ -78,14 +78,14 @@ namespace Borodar.RainbowHierarchy
             return _windowsCache;
         }
 
-        public static void ApplyIconByInstanceId(int instanceId, Texture2D icon)
+        public static void ApplyIconByInstanceId(EntityId entityId, Texture2D icon)
         {
             var hierarchyWindows = GetAllHierarchyWindows();
 
             foreach (var window in hierarchyWindows)
             {
                 var treeViewItems = GetTreeViewItems(window);
-                var treeViewItem = treeViewItems.FirstOrDefault(item => item.id == instanceId);
+                var treeViewItem = treeViewItems.FirstOrDefault(item => item.id == entityId);
                 if (treeViewItem != null) treeViewItem.icon = icon;
             }
         }
@@ -94,12 +94,12 @@ namespace Borodar.RainbowHierarchy
         // Helpers
         //---------------------------------------------------------------------
 
-        private static IEnumerable<TreeViewItem<int>> GetTreeViewItems(EditorWindow window)
+        private static IEnumerable<TreeViewItem<EntityId>> GetTreeViewItems(EditorWindow window)
         {
             var sceneHierarchy = SCENE_HIERARCHY_FIELD.GetValue(window);
             var treeView = TREE_VIEW_FIELD.GetValue(sceneHierarchy);
             var treeViewData = TREE_VIEW_DATA_PROPERTY.GetValue(treeView, null);
-            var treeViewItems = (IEnumerable<TreeViewItem<int>>) TREE_VIEW_ITEMS_METHOD.Invoke(treeViewData, null);
+            var treeViewItems = (IEnumerable<TreeViewItem<EntityId>>) TREE_VIEW_ITEMS_METHOD.Invoke(treeViewData, null);
 
             return treeViewItems;
         }

@@ -43,14 +43,14 @@ namespace Borodar.RainbowHierarchy
 			RECURSIVE_OBJECTS.Clear();
 		}
 
-		private static void RainbowHierarchyItemOnGUI(int instanceId, Rect selectionRect)
+		private static void RainbowHierarchyItemOnGUI(int entityId, Rect selectionRect)
 		{
-			var gameObject = (GameObject)EditorUtility.InstanceIDToObject(instanceId);
+			var gameObject = (GameObject) EditorUtility.EntityIdToObject(entityId);
 			if (gameObject == null) return;
 
 			DrawRowShading(selectionRect);
 			DrawFoldouts(gameObject, selectionRect);
-			ReplaceHierarchyTextures(instanceId, gameObject, selectionRect);
+			ReplaceHierarchyTextures(entityId, gameObject, selectionRect);
 			DrawEditIcon(gameObject, selectionRect);
 		}
 
@@ -107,7 +107,7 @@ namespace Borodar.RainbowHierarchy
 			GUI.DrawTexture(foldoutRect, HierarchyEditorUtility.GetFoldoutIcon(index));
 		}
 
-		private static void ReplaceHierarchyTextures(int instanceId, GameObject gameObject, Rect selectionRect)
+		private static void ReplaceHierarchyTextures(EntityId entityId, GameObject gameObject, Rect selectionRect)
 		{
 			if (EditorSceneManager.IsPreviewSceneObject(gameObject)) return;
 
@@ -124,16 +124,16 @@ namespace Borodar.RainbowHierarchy
 
 				if (recursiveItem != null)
 				{
-					DrawItemWithBiggerPriority(instanceId, selectionRect, ruleset, normalItem, recursiveItem);
+					DrawItemWithBiggerPriority(entityId, selectionRect, ruleset, normalItem, recursiveItem);
 				}
 				else
 				{
-					DrawNormalItem(instanceId, selectionRect, normalItem);
+					DrawNormalItem(entityId, selectionRect, normalItem);
 				}
 			}
 			else if (recursiveItem != null)
 			{
-				DrawRecursiveItem(instanceId, selectionRect, recursiveItem);
+				DrawRecursiveItem(entityId, selectionRect, recursiveItem);
 			}
 		}
 
@@ -169,23 +169,23 @@ namespace Borodar.RainbowHierarchy
 		// Helpers
 		//---------------------------------------------------------------------
 
-		private static void DrawItemWithBiggerPriority(int instanceId, Rect selectionRect, HierarchyRulesetV2 conf, HierarchyRule normalRule, HierarchyRule recursiveRule)
+		private static void DrawItemWithBiggerPriority(EntityId entityId, Rect selectionRect, HierarchyRulesetV2 conf, HierarchyRule normalRule, HierarchyRule recursiveRule)
 		{
 			if (recursiveRule.Priority > normalRule.Priority)
 			{
-				DrawRecursiveItem(instanceId, selectionRect, recursiveRule);
+				DrawRecursiveItem(entityId, selectionRect, recursiveRule);
 			}
 			else if (recursiveRule.Priority == normalRule.Priority)
 			{
-				DrawItemWithGreaterOrdinal(instanceId, selectionRect, conf, normalRule, recursiveRule);
+				DrawItemWithGreaterOrdinal(entityId, selectionRect, conf, normalRule, recursiveRule);
 			}
 			else
 			{
-				DrawNormalItem(instanceId, selectionRect, normalRule);
+				DrawNormalItem(entityId, selectionRect, normalRule);
 			}
 		}
 
-		private static void DrawItemWithGreaterOrdinal(int instanceId, Rect selectionRect, HierarchyRulesetV2 conf, HierarchyRule normalRule, HierarchyRule recursiveRule)
+		private static void DrawItemWithGreaterOrdinal(EntityId instanceId, Rect selectionRect, HierarchyRulesetV2 conf, HierarchyRule normalRule, HierarchyRule recursiveRule)
 		{
 			if (recursiveRule.Ordinal > normalRule.Ordinal)
 			{
@@ -197,25 +197,25 @@ namespace Borodar.RainbowHierarchy
 			}
 		}
 
-		private static void DrawNormalItem(int instanceId, Rect selectionRect, HierarchyRule normalRule)
+		private static void DrawNormalItem(EntityId instanceId, Rect selectionRect, HierarchyRule normalRule)
 		{
 			ReplaceIcon(instanceId, normalRule);
 			DrawCustomBackground(normalRule, selectionRect);
 		}
 
-		private static void DrawRecursiveItem(int instanceId, Rect selectionRect, HierarchyRule recursiveRule)
+		private static void DrawRecursiveItem(EntityId entityId, Rect selectionRect, HierarchyRule recursiveRule)
 		{
-			if (recursiveRule.IsIconRecursive) ReplaceIcon(instanceId, recursiveRule);
+			if (recursiveRule.IsIconRecursive) ReplaceIcon(entityId, recursiveRule);
 			if (recursiveRule.IsBackgroundRecursive) DrawCustomBackground(recursiveRule, selectionRect);
 		}
 
-		private static void ReplaceIcon(int instanceId, HierarchyRule rule)
+		private static void ReplaceIcon(EntityId entityId, HierarchyRule rule)
 		{
 			if (rule == null || !rule.HasIcon()) return;
 			var icon = rule.HasCustomIcon()
 				? rule.IconTexture
 				: HierarchyIconsStorage.GetIcon(rule.IconType);
-			HierarchyWindowAdapter.ApplyIconByInstanceId(instanceId, icon);
+			HierarchyWindowAdapter.ApplyIconByInstanceId(entityId, icon);
 		}
 
 		private static void DrawCustomIcon(Texture icon, Rect selectionRect)
