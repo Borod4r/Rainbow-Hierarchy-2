@@ -24,7 +24,13 @@ namespace Borodar.RainbowHierarchy
 		static RainbowHierarchyGUI()
 		{
 			EditorApplication.hierarchyChanged += HierarchyWindowChanged;
+
+			#if UNITY_6000_5_OR_NEWER
 			EditorApplication.hierarchyWindowItemByEntityIdOnGUI += RainbowHierarchyItemOnGUI;
+			#else
+			EditorApplication.hierarchyWindowItemOnGUI += RainbowHierarchyItemOnGUI;
+			#endif
+
 			HierarchyRulesetV2.OnRulesetChangeCallback += OnRulesetChange;
 		}
 
@@ -53,6 +59,15 @@ namespace Borodar.RainbowHierarchy
 			ReplaceHierarchyTextures(entityId, gameObject, selectionRect);
 			DrawEditIcon(gameObject, selectionRect);
 		}
+
+		#if !UNITY_6000_5_OR_NEWER
+		private static void RainbowHierarchyItemOnGUI(int entityId, Rect selectionRect)
+		{
+			#pragma warning disable CS0618 // Type or member is obsolete
+			RainbowHierarchyItemOnGUI((EntityId) entityId, selectionRect);
+			#pragma warning restore CS0618
+		}
+		#endif
 
 		//---------------------------------------------------------------------
 		// GUI
